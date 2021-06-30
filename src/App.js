@@ -1,26 +1,93 @@
-import logo from './logo.svg';
-import './App.css';
+import React, {useState} from 'react';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemAvatar from '@material-ui/core/ListItemAvatar';
+import ListItemSecondaryAction from '@material-ui/core/ListItemSecondaryAction';
+import ListItemText from '@material-ui/core/ListItemText';
+import Avatar from '@material-ui/core/Avatar';
+import IconButton from '@material-ui/core/IconButton';
+import Grid from '@material-ui/core/Grid';
+import Typography from '@material-ui/core/Typography';
+import PersonIcon from '@material-ui/icons/Person';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
+import DeleteIcon from '@material-ui/icons/Delete';
+import SaveIcon from '@material-ui/icons/Save';
+import TextField from '@material-ui/core/TextField';
 
+class App extends React.Component{
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+  state={
+    d:[],
+    text: ""
+  }
+
+  componentDidMount(){
+    fetch('http://localhost:5000/roster')
+    .then(res=>res.json())
+    .then((data)=>{
+      this.setState({d: data.roster})
+    })
+  }
+
+  render(){
+    return(
+      <div>
+      <Grid container spacing={2}>
+        <Grid item>
+          <Typography variant="h6" >
+            Roster
+          </Typography>
+          <div>
+            <List dense>
+              {this.state.d.map((person) => (
+                <ListItem>
+                  <ListItemAvatar>
+                    <Avatar>
+                      <PersonIcon />
+                    </Avatar>
+                  </ListItemAvatar>
+                  <ListItemText
+                    primary={person.first + " " + person.last}
+                  />
+                  <ListItemSecondaryAction>
+                    <IconButton edge="end" onClick={()=>{
+                        fetch('http://localhost:5000/roster', {
+                          method: 'DELETE',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({ first: person.first })
+                        })
+                      }}>
+                      <DeleteIcon />
+                    </IconButton>
+                  </ListItemSecondaryAction>
+                </ListItem>
+              ))}
+              <ListItem>
+                <ListItemAvatar>
+                  <Avatar>
+                    <PersonOutlineIcon />
+                  </Avatar>
+                </ListItemAvatar>
+                <TextField label="New Person" value={this.state.text} onChange={(e)=>{this.setState({text: e.target.value})}} />
+                <ListItemSecondaryAction>
+                  <IconButton edge="end" onClick={()=>{
+                      fetch('http://localhost:5000/roster', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ first: this.state.text.split(' ')[0], last: this.state.text.split(' ')[1] })
+                      })
+                    }}>
+                    <SaveIcon />
+                  </IconButton>
+                </ListItemSecondaryAction>
+              </ListItem>
+            </List>
+          </div>
+        </Grid>
+      </Grid>
     </div>
-  );
+    )
+  }
 }
 
 export default App;

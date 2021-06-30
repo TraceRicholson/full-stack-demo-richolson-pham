@@ -1,0 +1,32 @@
+[
+  {
+      "studentId": 1,
+      "firstname": "Trace",
+      "lastname": "Richolson"
+    },
+    {
+      "studentId": 2,
+      "firstname": "Andrew",
+      "lastname": "Pham"
+    },
+    {
+      "studentId": 3,
+      "firstname": "Alex",
+      "lastname": "Colter"
+    },
+    {
+      "studentId": 4,
+      "firstname": "Noah",
+      "lastname": "Loy"
+    },
+    {
+      "studentId": 5,
+      "firstname": "Jacob",
+      "lastname": "Musselman"
+    },
+    {
+      "studentId": 6,
+      "firstname": "Choliel",
+      "lastname": "Campbell"
+    }
+]
