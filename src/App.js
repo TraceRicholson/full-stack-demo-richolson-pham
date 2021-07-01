@@ -73,11 +73,24 @@ class App extends React.Component{
                 onChange={(e)=>{this.setState({text: e.target.value})}}
                 onKeyDown={(e)=>{
                   if(e.key === 'Enter'){
-                    fetch('http://localhost:5000/roster', {
-                      method: 'POST',
-                      headers: { 'Content-Type': 'application/json' },
-                      body: JSON.stringify({ first: this.state.text.split(' ')[0], last: this.state.text.split(' ')[1] })
-                    })
+                    if(this.state.text.indexOf(' ') === -1){
+                      fetch('http://localhost:5000/roster', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          first: this.state.text.split(' ')[0], last: " "
+                        })
+                      })
+                    }
+                    else{
+                      fetch('http://localhost:5000/roster', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                          first: this.state.text.split(' ')[0], last: this.state.text.split(' ')[1]
+                        })
+                      })
+                    }
                     window.location.reload()
                   }
                 }}
@@ -85,11 +98,24 @@ class App extends React.Component{
                 <ListItemSecondaryAction>
                   <IconButton id='submit' edge="end"
                   onClick={()=>{
+                    if(this.state.text.indexOf(' ') === -1){
                       fetch('http://localhost:5000/roster', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ first: this.state.text.split(' ')[0], last: this.state.text.split(' ')[1] })
-                      })
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            first: this.state.text.split(' ')[0], last: " "
+                          })
+                        })
+                      }
+                      else{
+                        fetch('http://localhost:5000/roster', {
+                          method: 'POST',
+                          headers: { 'Content-Type': 'application/json' },
+                          body: JSON.stringify({
+                            first: this.state.text.split(' ')[0], last: this.state.text.split(' ')[1]
+                          })
+                        })
+                      }
                       window.location.reload()
                   }}
                   >
