@@ -37,7 +37,7 @@ app.delete('/roster', async (req, res) => {
   const postData = req.body;
   console.log('Post Data', postData)
   try {
-    const newPerson = await db('roster').del().where('first',postData)
+    const deletePerson = await db('roster').where('first', req.body.first).delete()
     } catch (err) {
     res.status(500).json({message: "Error deleting name.", error: err})
     }
@@ -50,15 +50,15 @@ app.delete('/roster', async (req, res) => {
 
 
 
-app.post('/roster',function(req,res){
-    roster.push({firstname: req.body.firstname, lastname: req.body.lastname})
-});
+// app.post('/roster',function(req,res){
+//     roster.push({firstname: req.body.firstname, lastname: req.body.lastname})
+// });
 
-app.delete('/roster',function(req,res){
-    roster = roster.filter(function( obj ) {
-        return obj.id !== req.id;
-    });
-});
+// app.delete('/roster',function(req,res){
+//     roster = roster.filter(function( obj ) {
+//         return obj.id !== req.id;
+//     });
+// });
 
 app.listen(port, () => console.log(`Example app listening at http://localhost:${port}`))
 

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import ListItemAvatar from '@material-ui/core/ListItemAvatar';
@@ -56,6 +56,7 @@ class App extends React.Component{
                           headers: { 'Content-Type': 'application/json' },
                           body: JSON.stringify({ first: person.first })
                         })
+                        window.location.reload()
                       }}>
                       <DeleteIcon />
                     </IconButton>
@@ -68,15 +69,30 @@ class App extends React.Component{
                     <PersonOutlineIcon />
                   </Avatar>
                 </ListItemAvatar>
-                <TextField label="New Person" value={this.state.text} onChange={(e)=>{this.setState({text: e.target.value})}} />
+                <TextField label="New Person" value={this.state.text}
+                onChange={(e)=>{this.setState({text: e.target.value})}}
+                onKeyDown={(e)=>{
+                  if(e.key === 'Enter'){
+                    fetch('http://localhost:5000/roster', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ first: this.state.text.split(' ')[0], last: this.state.text.split(' ')[1] })
+                    })
+                    window.location.reload()
+                  }
+                }}
+                />
                 <ListItemSecondaryAction>
-                  <IconButton edge="end" onClick={()=>{
+                  <IconButton id='submit' edge="end"
+                  onClick={()=>{
                       fetch('http://localhost:5000/roster', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ first: this.state.text.split(' ')[0], last: this.state.text.split(' ')[1] })
                       })
-                    }}>
+                      window.location.reload()
+                  }}
+                  >
                     <SaveIcon />
                   </IconButton>
                 </ListItemSecondaryAction>
